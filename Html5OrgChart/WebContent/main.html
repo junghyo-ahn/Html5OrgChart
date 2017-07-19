@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+<link href="./lib/css/bootstrap/3.3.2/bootstrap.css" rel="stylesheet">
+<link href="./lib/css/bootstrap/3.3.2/bootstrap-theme.css" rel="stylesheet">
+<style type="text/css">
+	* {
+	  -webkit-box-sizing: border-box;
+	     -moz-box-sizing: border-box;
+	          box-sizing: border-box;
+	}
+	body {padding:0; margin:0;}
+	#canvasContainer {border:1px solid silver; height:500; margin:20px 20px;}
+</style>
+<script type="text/javascript" src="./lib/js/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var canvas = $("#canvas").get(0),
+		    context = canvas.getContext("2d");
+		ORG_TREE.create("RootNode");
+	});
+	
+	var ORG_TREE = (function () {
+		return = {
+			create: function (text) {
+	            return new ORG_TREE(text);
+	        }
+		}
+	})();
+</script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class=".col-md-12" id="canvasContainer"><canvas id="canvas"></canvas></div>
+		</div>
+	</div>
+</body>
+</html>

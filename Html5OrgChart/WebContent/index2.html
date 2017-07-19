@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+<head>
+<link rel="stylesheet" href="main.css"/>
+<script type="text/javascript" src="/lib/js/jquery/jquery-3.2.1.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		ORG_CHART.create({
+			canvasWidth: 100,
+			debugMode: true
+		});
+	});
+	
+	var ORG_CHART = (function() {
+		var defaultConfig = {
+			canvasWidth: 0,
+			canvasHeight: 0,
+			containerId: "orgChartContainer",
+			container: null,
+			canvasId: "canvas",
+			canvas: null,
+			debugMode: false
+		};
+		
+		var OrgChart = function(prop) {
+			this.orgChartComm = new OrgChartComm(this);
+			this.config = this.orgChartComm.extend(defaultConfig, prop || {});
+			
+			this.init();
+		};
+		
+		OrgChart.prototype = {
+			init: function() {
+				this.createCanvasElement();
+			},
+			
+			createCanvasElement: function() {
+				this.orgChartComm.log("Enter createCanvasElement.......");
+				
+				var container = document.getElementById(this.config.containerId);
+				container.innerHTML = "<canvas id='" + this.config.canvasId + "'>Your browser doesn't support canvas element</canvas>";
+				
+				var canvas = document.getElementById(this.config.canvasId);
+				this.config.canvas = canvas;
+				
+				return this.config.canvas;
+			}
+		};
+		
+		var OrgChartComm = function(orgChart) {
+			this.console = window.console || {log: function(){}};
+			this.orgChart = orgChart;
+		};
+		
+		OrgChartComm.prototype = {
+			log: function(text) {
+				if (this.orgChart.config.debugMode) {
+					this.console.log(text);
+				}
+			},
+			
+			isFunction: function(obj) {
+				return obj instanceof Function;
+			},
+			
+			supportCanvas: function() {
+				var elem = createElement('canvas');
+			    return !!(elem.getContext && elem.getContext('2d'));
+			},
+			
+			extend: function() {
+				var options, name, src, copy, copyIsArray, clone,
+				target = arguments[ 0 ] || {},
+				i = 1,
+				length = arguments.length,
+				deep = false;
+
+				// Handle a deep copy situation
+				if ( typeof target === "boolean" ) {
+					deep = target;
+	
+					// Skip the boolean and the target
+					target = arguments[ i ] || {};
+					i++;
+				}
+	
+				// Handle case when target is a string or something (possible in deep copy)
+				if ( typeof target !== "object" && !this.isFunction( target ) ) {
+					target = {};
+				}
+	
+				// Extend jQuery itself if only one argument is passed
+				if ( i === length ) {
+					target = this;
+					i--;
+				}
+	
+				for ( ; i < length; i++ ) {
+	
+					// Only deal with non-null/undefined values
+					if ( ( options = arguments[ i ] ) != null ) {
+	
+						// Extend the base object
+						for ( name in options ) {
+							src = target[ name ];
+							copy = options[ name ];
+	
+							// Prevent never-ending loop
+							if ( target === copy ) {
+								continue;
+							}
+	
+							// Recurse if we're merging plain objects or arrays
+							if ( deep && copy && ( jQuery.isPlainObject( copy ) ||
+								( copyIsArray = Array.isArray( copy ) ) ) ) {
+	
+								if ( copyIsArray ) {
+									copyIsArray = false;
+									clone = src && Array.isArray( src ) ? src : [];
+	
+								} else {
+									clone = src && jQuery.isPlainObject( src ) ? src : {};
+								}
+	
+								// Never move original objects, clone them
+								target[ name ] = jQuery.extend( deep, clone, copy );
+	
+							// Don't bring in undefined values
+							} else if ( copy !== undefined ) {
+								target[ name ] = copy;
+							}
+						}
+					}
+				}
+	
+				// Return the modified object
+				return target;
+			}
+		}
+		
+		return {
+			create: function(prop) {
+				return new OrgChart(prop);
+			},
+			
+			draw: function() {
+				
+			}
+		}
+	}(document));
+</script>
+</head>
+<body>
+<div id="header">
+    Family Name
+</div>
+<div id="control_panel">
+    <div class="section">
+        Control Panel
+    </div>
+    
+    <button id="add_child">
+        Add Child
+    </button>
+    <button id="remove_node">
+        Remove Node
+    </button>
+    <button id="zoom_in">
+        Zoom In
+    </button>
+    <button id="zoom_out">
+        Zoom Out
+    </button>
+    <div class="section">
+        Information Panel
+    </div>
+    <div id="information_panel">
+
+    </div>
+</div>
+<div id="divider">
+
+</div>
+<div id="orgChartContainer"></div>
+
+</body>
+</html>
